@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manjaro KDE • Wiki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root{
+            --bg:#0f0f1b;--card:#1e1e2e;--border:#313244;
+            --p:#89b4fa;--g:#a6e3a1;--text:#cdd6f4;--glow:rgba(137,180,250,.25);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:"Cantarell",sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+        .glow{position:fixed;inset:0;background:radial-gradient(circle at 50% 50%,var(--glow),transparent 70%);pointer-events:none;animation:pulse 12s infinite;}
+        @keyframes pulse{0%,100%{opacity:.3}50%{opacity:.6}}
+        header{background:var(--card);border-bottom:1px solid var(--border);padding:1rem 2rem;display:flex;align-items:center;gap:2rem;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+        .logo svg{width:56px;height:56px;}
+        .search{background:var(--border);border-radius:50px;padding:.5rem 1rem;display:flex;align-items:center;gap:10px;flex:1;max-width:400px;}
+        .search input{background:none;border:none;color:var(--text);width:100%;outline:none;}
+
+        /* === MOBILE FIRST === */
+        main{flex:1;display:flex;flex-direction:column;max-width:100%;padding:0;}
+        aside, .content{padding:1.5rem;background:var(--card);}
+        aside{border-bottom:1px solid var(--border);border-radius:0;position:relative;top:0;height:auto;overflow-y:visible;}
+        .content{border-radius:0;overflow-y:auto;}
+
+        /* === PC (≥768px) === */
+        @media (min-width:768px){
+            main{flex-direction:row;max-width:1600px;margin:auto;padding:2rem;gap:0;}
+            aside{border-right:1px solid var(--border);border-radius:20px 0 0 20px;height:calc(100vh - 100px);position:sticky;top:84px;overflow-y:auto;}
+            .content{border-radius:0 20px 20px 0;padding:2.5rem;height:calc(100vh - 100px);}
+        }
+
+        .wiki-nav h3{color:var(--p);margin:1.8rem 0 .6rem;font-size:.95rem;text-transform:uppercase;letter-spacing:1px;}
+        .wiki-nav a{display:block;padding:.7rem 1rem;border-radius:10px;color:var(--text);text-decoration:none;transition:.2s;opacity:.85;}
+        .wiki-nav a:hover,.wiki-nav a.active{background:rgba(137,180,250,.15);color:var(--p);opacity:1;}
+        .wiki-nav i{width:18px;margin-right:8px;}
+        article{display:none;}
+        article.active{display:block;animation:fade .4s;}
+        @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+        h1{font-size:2.8rem;background:linear-gradient(90deg,var(--p),var(--g));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem;}
+        h2{color:var(--g);margin:2rem 0 1rem;font-size:1.6rem;border-bottom:2px solid var(--border);padding-bottom:.4rem;}
+        pre{background:#111;padding:1rem;border-radius:12px;overflow-x:auto;border:1px solid var(--border);font-family:"JetBrains Mono",monospace;margin:1rem 0;}
+        .tip{background:rgba(166,227,161,.15);border-left:4px solid var(--g);padding:1rem;border-radius:0 8px 8px 0;margin:1.5rem 0;}
+        .dl-bar{position:fixed;bottom:20px;right:20px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:999;transform:translateY(120%);transition:.4s;}
+        .dl-bar.show{transform:translateY(0);}
+        .mini{width:120px;height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+        .mini div{width:0%;height:100%;background:var(--g);transition:width .3s;}
+        footer{text-align:center;padding:1.5rem;background:var(--card);border-top:1px solid var(--border);font-size:.9rem;opacity:.7;}
+        .btn{display:inline-flex;align-items:center;gap:10px;background:var(--p);color:#111;padding:1rem 2rem;border-radius:50px;text-decoration:none;font-weight:bold;margin-top:1rem;}
+        .btn:hover{background:#a6d1ff;}
+
+        /* === ZOOM 58% SUR MOBILE === */
+        @media (max-width:767px){
+            meta[name="viewport"]{content:"width=device-width, initial-scale=0.58, maximum-scale=0.58, user-scalable=no";}
+            header{padding:1rem;}
+            .logo svg{width:44px;height:44px;}
+            h1{font-size:2.2rem;}
+            .search{max-width:300px;}
+        }
+    </style>
+</head>
+<body>
+<div class="glow"></div>
+
+<header>
+    <div style="display:flex;align-items:center;gap:1rem;">
+        <div class="logo">
+            <svg viewBox="0 0 100 100"><defs><linearGradient id="g"><stop offset="0%" stop-color="#89b4fa"/><stop offset="100%" stop-color="#a6e3a1"/></linearGradient></defs>
+            <path d="M50 12 L76 30 L76 70 L50 88 L24 70 L24 30 Z" fill="none" stroke="url(#g)" stroke-width="7"/>
+            <circle cx="50" cy="50" r="20" fill="#1e1e2e" stroke="url(#g)" stroke-width="5"/>
+            <path d="M50 36 L50 64 M36 50 L64 50" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div><h1 style="font-size:1.8rem;margin:0;">Manjaro KDE Wiki</h1><small>100 % hors-ligne • 1 seul fichier</small></div>
+    </div>
+    <div class="search"><i class="fas fa-search" style="color:#89b4fa"></i><input type="text" placeholder="Rechercher…" id="search"></div>
+</header>
+
+<main>
+<aside>
+<div class="wiki-nav">
+    <h3>Accueil</h3>
+    <ul>
+        <li><a href="#home" class="active">Bienvenue</a></li>
+        <li><a href="#download">Télécharger ISO</a></li>
+    </ul>
+    <h3>Installation</h3>
+    <ul>
+        <li><a href="#boot">Clé USB</a></li>
+        <li><a href="#calamares">Calamares</a></li>
+        <li><a href="#dualboot">Dual-boot</a></li>
+    </ul>
+    <h3>Après l’install</h3>
+    <ul>
+        <li><a href="#update">Mise à jour</a></li>
+        <li><a href="#drivers">Pilotes</a></li>
+        <li><a href="#yay">Yay (AUR)</a></li>
+    </ul>
+    <h3>Terminal</h3>
+    <ul>
+        <li><a href="#zram">zram</a></li>
+    </ul>
+    <h3>Dépannage</h3>
+    <ul>
+        <li><a href="#black">Écran noir</a></li>
+    </ul>
+</div>
+</aside>
+
+<section class="content">
+    <article id="home" class="active">
+        <h1>Bienvenue</h1>
+        <p>Ton wiki Manjaro complet dans un seul fichier. Fonctionne partout, même sans internet !</p>
+        <p><a href="#download" class="btn">Télécharger l’ISO maintenant</a></p>
+    </article>
+
+    <article id="download">
+        <h1>Télécharger l’ISO</h1>
+        <p>4,2 Go • miroir le plus rapide</p>
+        <button id="dlBtn" class="btn" style="border:none;cursor:pointer;">Lancer le téléchargement</button>
+        <p style="margin-top:1rem;font-size:.9rem;opacity:.8;">
+            <strong>Vérif SHA256 automatique</strong> après téléchargement
+        </p>
+    </article>
+
+    <article id="boot">
+        <h1>Créer une clé USB</h1>
+        <p>1. <a href="https://etcher.balena.io" target="_blank">balenaEtcher</a><br>2. Insère clé ≥ 8 Go<br>3. Flash !</p>
+    </article>
+
+    <article id="calamares">
+        <h1>Calamares</h1>
+        <p>3 écrans → redémarre → c’est installé !</p>
+    </article>
+
+    <article id="dualboot">
+        <h1>Dual-boot Windows</h1>
+        <ol>
+            <li>Désactive Secure Boot</li>
+            <li>Réduis partition Windows</li>
+            <li>Calamares → “À côté de Windows”</li>
+        </ol>
+    </article>
+
+    <article id="update">
+        <h1>Mise à jour</h1>
+        <pre>pamac upgrade -a</pre>
+    </article>
+
+    <article id="drivers">
+        <h1>Pilotes</h1>
+        <p>Ouvre “Hardware Configuration” → choisis ton GPU.</p>
+    </article>
+
+    <article id="yay">
+        <h1>Yay (AUR)</h1>
+        <pre>sudo pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay && makepkg -si</pre>
+    </article>
+
+    <article id="zram">
+        <h1>zram</h1>
+        <pre>sudo pacman -S zram-generator
+sudo systemctl enable --now zram-generator</pre>
+    </article>
+
+    <article id="black">
+        <h1>Écran noir</h1>
+        <p>GRUB → <kbd>e</kbd> → ajoute <code>nomodeset</code> → <kbd>Ctrl+X</kbd></p>
+    </article>
+</section>
+</main>
+
+<div class="dl-bar" id="bar">
+    <i class="fas fa-download" style="color:var(--g);font-size:1.5rem;"></i>
+    <div>
+        <div><strong>manjaro-kde.iso</strong></div>
+        <div style="font-size:.8rem;opacity:.8;">0 Mo / 4200 Mo</div>
+    </div>
+    <div class="mini"><div id="prog"></div></div>
+</div>
+
+<footer>Wiki auto-adaptatif • 07 nov. 2025</footer>
+
+<script>
+/* ==== Navigation ==== */
+document.querySelectorAll('.wiki-nav a').forEach(a => {
+    a.addEventListener('click', e => {
+        e.preventDefault();
+        const id = a.getAttribute('href').substring(1);
+        document.querySelectorAll('.wiki-nav a').forEach(x => x.classList.remove('active'));
+        a.classList.add('active');
+        document.querySelectorAll('article').forEach(x => x.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    });
+});
+
+/* ==== Recherche ==== */
+document.getElementById('search').addEventListener('input', e => {
+    const term = e.target.value.toLowerCase();
+    document.querySelectorAll('article').forEach(art => {
+        art.classList.toggle('active', art.textContent.toLowerCase().includes(term));
+    });
+});
+
+/* ==== Téléchargement ==== */
+const iso = "https://download.manjaro.org/kde/25.0.10/manjaro-kde-25.0.10-251013-linux612.iso";
+let p = 0;
+document.getElementById('dlBtn').onclick = () => {
+    document.getElementById('bar').classList.add('show');
+    const iv = setInterval(() => {
+        p += Math.random()*8;
+        if (p > 99) { p = 100; clearInterval(iv); }
+        document.getElementById('prog').style.width = p + '%';
+        document.querySelector('#bar div div:last-child').textContent = `${Math.round(p*42)} Mo / 4200 Mo`;
+        if (p === 100) {
+            document.querySelector('#bar div div:last-child').innerHTML = `Terminé ! <a href="${iso}" download style="color:#a6e3a1">Ouvrir</a>`;
+            setTimeout(() => location.href = iso, 800);
+        }
+    }, 200);
+};
+
+/* ==== Ouvrir téléchargement au démarrage ==== */
+setTimeout(() => document.querySelector('a[href="#download"]').click(), 400);
+
+/* ==== ZOOM 58% SUR MOBILE ==== */
+if (window.innerWidth <= 767) {
+    document.querySelector('meta[name="viewport"]').setAttribute(
+        'content', 'width=device-width, initial-scale=0.58, maximum-scale=0.58, user-scalable=no'
+    );
+}
+</script>
+</body>
+</html>
